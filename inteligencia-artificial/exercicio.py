@@ -1,3 +1,5 @@
+from queue import Queue 
+
 class Node:
     def __init__(self, base=None):
 
@@ -44,11 +46,15 @@ class Node:
             print('------------')
 
 class Busca:
+    fila = Queue() 
     def testeObjetivo(self, base):
+        fila.get(self)
         return False
     
     def sucessor(self, base, lista):
         print('Logica aq')
+        fila.put(self)
+
 
 
 if __name__ == '__main__':
