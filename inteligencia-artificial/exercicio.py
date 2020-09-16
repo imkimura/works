@@ -1,7 +1,7 @@
 from queue import Queue 
 
 class Node:
-    def __init__(self, base=None):
+    def __init__(self, state=None, base=None):
 
         if base is not None:
             self.pai = base    
@@ -11,61 +11,87 @@ class Node:
             for i in range(9):
                 self.state[i] = base.state[i]
         else:
-            self.pai = self    
+            self.pai = None    
             self.custo = 0
             self.profundidade = 0
-            self.state = [1, 2, 3, 4, 5, 6, 7, 8, 0]
+            self.state = state[:]
     
-    def __str__(self):
+    # def __str__(self):
         
-        print(f'{self.pai.state} {self.custo} {self.profundidade}')
-        
-        
-        print('------------')
-        
-        for i in range(0, 9):
-            print(self.state[i])
+    #     print(f'{self.custo} {self.profundidade}')
 
-            if ((i+1)%3 == 0):
-                print('\n')
-            
-            print('------------')
-
+    
     
     def printNode(self):
         
-        if self.pai is not None:
-            print(self.pai)
-
+        # if self.pai is not None:
+        #     print(self.pai, end="")
+        
+        print('')
         for i in range(0, 9):
-            print(self.state[i])
+            print(self.state[i], end=" ")
 
             if ((i+1)%3 == 0):
-                print('\n')
+                print('')
             
-            print('------------')
+            if ((i+1)%9 == 0):
+                print('------------')
+                print('Custo - {} | Profundidade - {}' .format(self.custo, self.profundidade))
+                print('------------')
+
+def move(self, listOrd, original_index, final_index):
+    listOrd.insert(final_index, listOrd.pop(original_index))
+    return listOrd
 
 class Busca:
-    fila = Queue() 
-    def testeObjetivo(self, base):
-        fila.get(self)
-        return False
+    def __init__(self):
+        self.fila = Queue() 
+        self.file = []
+        self.objetivo = [5, 1, 3, 
+                         0, 2, 6, 
+                         4, 7, 8]
     
-    def sucessor(self, base, lista):
+    def testeObjetivo(self, base):
+        if base.state == self.objetivo:
+            return True
+        else:
+            return False
+    
+    def getFile(self):
+        first = self.file[0]
+        self.file.remove(first)
+        return first
+
+    def sucessor(self, base):
         print('Logica aq')
-        fila.put(self)
+
+        
+    
+    def buscaLargura(self, raiz):
+        self.file.append(raiz)        
+
+        while(len(self.file) > 0):
+            node = Node(base=self.getFile())
+            print(node)
+            if self.testeObjetivo(node):
+                print(node)
+                return node
+            else:
+                self.sucessor(node)
 
 
 
 if __name__ == '__main__':
 
-    n = Node()
+    state = [1, 2, 3, 4, 5, 6, 7, 8, 0]
+    
+    n = Node(state=state)
 
     n.printNode()
 
-    j = Node(n)
+    b = Busca()
 
-    j.printNode()
+    resp = b.buscaLargura(n)
 
 
 
