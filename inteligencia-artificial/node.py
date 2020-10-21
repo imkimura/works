@@ -2,8 +2,8 @@ from queue import Queue
 
 
 class Node:
-    def __init__(self, state=None, base=None, acao=None):
-
+    def __init__(self, state=None, base=None, acao=None):        
+        
         if base is not None:
             
             self.pai = base    
