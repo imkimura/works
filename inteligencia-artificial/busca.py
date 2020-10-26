@@ -7,18 +7,35 @@ class Busca:
         self.fila = []
         self.objetivo = [1, 2, 3, 4, 5, 6, 7, 8, 0]
         self.limite = 0
+        self.filaOrd = []
     
     def testeObjetivo(self, base):
         if base.state == self.objetivo:
             return True
         else:
             return False
-    
+
+    def addOrd(self, nodeAdd):
+        for chave, node in enumerate(self.filaOrd):
+            if nodeAdd.getCusto() < node.getCusto():
+                self.filaOrd.insert(chave, nodeAdd)
+                break
+        else:
+            self.filaOrd.append(nodeAdd)
+
     def pegarPrimeiroNo(self):
         
         firstNo = self.fila[0]
         
         self.fila.remove(firstNo)
+        
+        return firstNo
+    
+    def pegarPrimeiroNoOrd(self):
+        
+        firstNo = self.filaOrd[0]
+        
+        self.filaOrd.remove(firstNo)
         
         return firstNo
 
@@ -44,6 +61,7 @@ class Busca:
             andaPraCima.state = hp.move(andaPraCima.state, posicaoNulo, (posicaoNulo-3))
 
             self.fila.append(andaPraCima)     
+            self.addOrd(andaPraCima)
 
         # Baixo P + 3
         if (posicaoNulo+3) < len(base.state):
@@ -52,6 +70,7 @@ class Busca:
             andaPraBaixo.state = hp.move(andaPraBaixo.state, posicaoNulo, (posicaoNulo+3))
             
             self.fila.append(andaPraBaixo)     
+            self.addOrd(andaPraBaixo)
 
         # Left P - 1
         if posicaoNulo not in limiteLadoEsquerdo:
@@ -60,6 +79,7 @@ class Busca:
             andaPraEsquerda.state = hp.move(andaPraEsquerda.state, posicaoNulo, (posicaoNulo-1))
             
             self.fila.append(andaPraEsquerda)       
+            self.addOrd(andaPraEsquerda)
         
         # Right P + 1
         if posicaoNulo not in limiteLadoDireito and (posicaoNulo+1) < len(base.state):
@@ -68,6 +88,7 @@ class Busca:
             andaPraDireita.state = hp.move(andaPraDireita.state, posicaoNulo, (posicaoNulo+1))
             
             self.fila.append(andaPraDireita)          
+            self.addOrd(andaPraDireita)
           
     def buscaLargura(self, base):
         self.fila.append(base)        
@@ -112,12 +133,9 @@ class Busca:
         
         while(len(self.fila) > 0):
             
-            no = self.pegarUltimoNo()
-            
-            no.printNo()
+            no = self.pegarUltimoNo()            
             
             if self.testeObjetivo(no):
-                no.printNo()
                 return no
             else:                
                 if (no.profundidade + 1) < self.limite:
@@ -138,6 +156,23 @@ class Busca:
                 print(f'\n\n Limite = {self.limite}')
             else:
                 return r
+    
+    def buscaCustoUniforme(self, base):
+        self.addOrd(base)        
+
+        count = 0
+        # em test -> count != 10 // certo -> len(self.filaOrd) > 0
+        while(count != 5):
+
+            no = self.pegarPrimeiroNoOrd()
+            no.printNo()
+            
+            if self.testeObjetivo(no):
+                no.printNo()
+                return no
+            else:
+                self.sucessor(no)                            
+            count += 1
 
 #  Busca em profundidade - ok
 #  Busca em profundidade limitada - ok

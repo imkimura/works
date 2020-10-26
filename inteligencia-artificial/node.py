@@ -17,7 +17,10 @@ class Node:
             self.pai = None    
             self.custo = 0
             self.profundidade = 0
-            self.state = state[:]  
+            self.state = state[:] 
+
+    def getCusto(self):
+        return self.custo 
 
     def printNo(self):
 

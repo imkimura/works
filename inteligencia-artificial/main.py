@@ -15,7 +15,7 @@ if __name__ == '__main__':
     b = Busca()
 
     # resp = b.buscaLargura(n)
-    resp = b.buscaAprofIterativo(n)
+    resp = b.buscaCustoUniforme(n)
 
     print('\n ----------------- Final ----------------------')
 
