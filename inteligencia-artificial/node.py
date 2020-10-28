@@ -25,15 +25,16 @@ class Node:
     def printNo(self):
 
         print('')
-        for i in range(0, 9):
+        for i in range(0, 16):
             print(self.state[i], end=" ")
 
-            if ((i+1)%3 == 0):
+            if ((i+1)%4 == 0):
                 print('')
-            
-            if ((i+1)%9 == 0):
+
+            if ((i+1)%16 == 0):
+
                 if self.acao is not None:
-                    print('------------')
+                    print('\n\n------------')
                     print('Custo - {} | Profundidade - {} | Ação - {}' .format(self.custo, self.profundidade, self.acao))
                     print('------------')
                 else:
@@ -41,10 +42,8 @@ class Node:
                     print('Custo - {} | Profundidade - {}' .format(self.custo, self.profundidade))
                     print('------------')
 
- 
-
-
-
-
-
-    
+    def printResult(self):        
+        pai = self.pai
+        while (pai):
+            pai.printNo()
+            pai = pai.pai

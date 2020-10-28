@@ -5,7 +5,7 @@ from helper import Helper as hp
 class Busca:
     def __init__(self):
         self.fila = []
-        self.objetivo = [1, 2, 3, 4, 5, 6, 7, 8, 0]
+        self.objetivo = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0]
         self.limite = 0
         self.filaOrd = []
     
@@ -49,31 +49,31 @@ class Busca:
 
     def sucessor(self, base):
 
-        limiteLadoEsquerdo = [0, 3, 6]
-        limiteLadoDireito = [2, 5, 8]
+        limiteLadoEsquerdo = [0, 4, 8, 12]
+        limiteLadoDireito  = [3, 7, 11, 15]
 
         posicaoNulo = base.state.index(0)
      
-        # Cima P - 3
-        if (posicaoNulo-3) >= 0:
+        # Cima P - 4
+        if (posicaoNulo-4) >= 0:
             andaPraCima = Node(base=base, acao='Cima')
 
-            andaPraCima.state = hp.move(andaPraCima.state, posicaoNulo, (posicaoNulo-3))
+            andaPraCima.state = hp.move(andaPraCima.state, posicaoNulo, (posicaoNulo-4))
 
             self.fila.append(andaPraCima)     
             self.addOrd(andaPraCima)
 
-        # Baixo P + 3
-        if (posicaoNulo+3) < len(base.state):
+        # Baixo P + 4
+        if (posicaoNulo+4) < len(base.state):
             andaPraBaixo = Node(base=base, acao='Baixo')
 
-            andaPraBaixo.state = hp.move(andaPraBaixo.state, posicaoNulo, (posicaoNulo+3))
+            andaPraBaixo.state = hp.move(andaPraBaixo.state, posicaoNulo, (posicaoNulo+4))
             
             self.fila.append(andaPraBaixo)     
             self.addOrd(andaPraBaixo)
 
         # Left P - 1
-        if posicaoNulo not in limiteLadoEsquerdo:
+        if posicaoNulo not in limiteLadoEsquerdo and (posicaoNulo-1) > 0:
             andaPraEsquerda = Node(base=base, acao='Esquerda')               
 
             andaPraEsquerda.state = hp.move(andaPraEsquerda.state, posicaoNulo, (posicaoNulo-1))
@@ -98,10 +98,10 @@ class Busca:
         while(len(self.fila) > 0):
             
             no = self.pegarPrimeiroNo()
-            no.printNo()
+            # no.printNo()
             
             if self.testeObjetivo(no):
-                no.printNo()
+                # no.printNo()
                 return no
             else:
                 self.sucessor(no)                            
@@ -116,10 +116,10 @@ class Busca:
             
             no = self.pegarUltimoNo()
             
-            no.printNo()
+            # no.printNo()
             
             if self.testeObjetivo(no):
-                no.printNo()
+                # no.printNo()
                 return no
             else:            
                 self.sucessor(no)                            
@@ -177,4 +177,4 @@ class Busca:
 #  Busca em profundidade - ok
 #  Busca em profundidade limitada - ok
 #  Busca em aprofundidamento iterativo - ok
-#  Busca de custo uniforme
+#  Busca de custo uniforme - ok

@@ -4,9 +4,10 @@ from node import Node
 
 if __name__ == '__main__':
 
-    state = [5, 1, 3, 
-             0, 2, 6, 
-             4, 7, 8]
+    state = [ 1,  2,  3,  4,
+              5,  6,  7,  8,  
+              9, 10,  0, 12,
+              11, 13, 14, 15]
     
     n = Node(state=state)
 
@@ -14,9 +15,8 @@ if __name__ == '__main__':
 
     b = Busca()
 
-    # resp = b.buscaLargura(n)
-    resp = b.buscaCustoUniforme(n)
+    resp = b.buscaLargura(n)
 
     print('\n ----------------- Final ----------------------')
 
-    resp.printNo()
+    resp.printResult()
