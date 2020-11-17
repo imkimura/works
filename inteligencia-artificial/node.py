@@ -21,7 +21,6 @@ class Node:
             self.state = state[:] 
         
         self.h1, self.h2 = self.getHeuristics()
-        # self.h2 = self.getHeuristic(heuristicType=1)
 
     def getHeuristics(self):
         objetive = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0]

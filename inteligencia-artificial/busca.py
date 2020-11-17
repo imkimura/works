@@ -72,7 +72,7 @@ class Busca:
         return lastNo
 
     def sucessor(self, base, typeAdd, typeH=None):
-
+        nosGerados = 0
         limiteLadoEsquerdo = [0, 4, 8, 12]
         limiteLadoDireito  = [3, 7, 11, 15]
 
@@ -83,7 +83,7 @@ class Busca:
             andaPraCima = Node(base=base, acao='Cima')
 
             andaPraCima.state = hp.move(andaPraCima.state, posicaoNulo, (posicaoNulo-4))
-
+            nosGerados += 1
             if typeAdd == 1:                
                 self.fila.append(andaPraCima)
             elif typeAdd == 2:                    
@@ -98,7 +98,7 @@ class Busca:
             andaPraBaixo = Node(base=base, acao='Baixo')
 
             andaPraBaixo.state = hp.move(andaPraBaixo.state, posicaoNulo, (posicaoNulo+4))
-            
+            nosGerados += 1
             if typeAdd == 1:                
                 self.fila.append(andaPraBaixo)
             elif typeAdd == 2:                    
@@ -113,7 +113,7 @@ class Busca:
             andaPraEsquerda = Node(base=base, acao='Esquerda')               
 
             andaPraEsquerda.state = hp.move(andaPraEsquerda.state, posicaoNulo, (posicaoNulo-1))
-            
+            nosGerados += 1
             if typeAdd == 1:                
                 self.fila.append(andaPraEsquerda)
             elif typeAdd == 2:                    
@@ -128,7 +128,7 @@ class Busca:
             andaPraDireita = Node(base=base, acao='Direita')            
 
             andaPraDireita.state = hp.move(andaPraDireita.state, posicaoNulo, (posicaoNulo+1))
-            
+            nosGerados += 1
             if typeAdd == 1:                
                 self.fila.append(andaPraDireita)
             elif typeAdd == 2:                    
@@ -137,6 +137,8 @@ class Busca:
                 self.addOrdbyHeuristic(andaPraDireita, typeH)
             else:
                 self.addOrdbyHeuristicCusto(andaPraDireita, typeH)
+        
+        return nosGerados
           
     def buscaLargura(self, base):
         self.fila.append(base)        
@@ -174,7 +176,7 @@ class Busca:
             count += 1
 
     def buscaProfundidadeLimitada(self, base):        
-
+        nosGerados = 0
         self.fila.append(base)        
 
         count = 0
@@ -184,26 +186,27 @@ class Busca:
             no = self.pegarUltimoNo()            
             
             if self.testeObjetivo(no):
-                return no
+                return no, nosGerados
             else:                
                 if (no.profundidade + 1) < self.limite:
-                    self.sucessor(no, 1)                            
+                    nosGerados += self.sucessor(no, 1)                            
             count += 1
         
         print('\n ----------------- Sem Solução ----------------- \n') 
 
-        return None 
+        return None, nosGerados 
     
     def buscaAprofIterativo(self, base):
         r = None
+        
         self.limite = 0
         while(True):
-            r = self.buscaProfundidadeLimitada(base)
+            r, nosGerados = self.buscaProfundidadeLimitada(base)
             if r is None:
                 self.limite += 1
                 print(f'\n\n Limite = {self.limite}')
             else:
-                return r
+                return r, nosGerados
     
     def buscaCustoUniforme(self, base):
         self.addOrd(base)        
@@ -223,8 +226,11 @@ class Busca:
             count += 1
     
     def buscaGulosaME(self, base, typeH):
+        if typeH: h = 'H2' 
+        else: h = 'H1'
+        print('Busca GME %s ...  \n\n' % h)
         self.addOrdbyHeuristic(base,typeH)        
-
+        nosGerados = 0
         count = 0
         
         while(len(self.filaOrd) > 0):
@@ -234,27 +240,29 @@ class Busca:
             
             if self.testeObjetivo(no):
                 no.printNo()
-                return no
+                return no, nosGerados
             else:
-                self.sucessor(no, 3, typeH)                            
+                nosGerados += self.sucessor(no, 3, typeH)                            
             count += 1
     
     def buscaAplus(self, base, typeH):
+        if typeH: h = 'H2' 
+        else: h = 'H1'
+        print('Busca A* %s ...  \n\n' % h)
         self.addOrdbyHeuristicCusto(base, typeH)        
-
+        nosGerados = 0
         count = 0
         
         while(len(self.filaOrd) > 0):
 
             no = self.pegarPrimeiroNoOrdHeuristic()
-            no.printNo()
             
             if self.testeObjetivo(no):
-                no.printNo()
-                return no
+                return no, nosGerados
             else:
-                self.sucessor(no, 4, typeH)                            
+                nosGerados += self.sucessor(no, 4, typeH)                            
             count += 1
+                
 
 #  Busca em profundidade - ok
 #  Busca em profundidade limitada - ok
