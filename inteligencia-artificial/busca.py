@@ -22,6 +22,22 @@ class Busca:
                 break
         else:
             self.filaOrd.append(nodeAdd)
+    
+    def addOrdbyHeuristic(self, nodeAdd, typeH):
+        for chave, node in enumerate(self.filaOrd):
+            if nodeAdd.getHeuristic(typeH) < node.getHeuristic(typeH):
+                self.filaOrd.insert(chave, nodeAdd)
+                break
+        else:
+            self.filaOrd.append(nodeAdd)
+   
+    def addOrdbyHeuristicCusto(self, nodeAdd, typeH):
+        for chave, node in enumerate(self.filaOrd):
+            if nodeAdd.getHeuristicCusto(typeH) < node.getHeuristicCusto(typeH):
+                self.filaOrd.insert(chave, nodeAdd)
+                break
+        else:
+            self.filaOrd.append(nodeAdd)
 
     def pegarPrimeiroNo(self):
         
@@ -116,7 +132,7 @@ class Busca:
             
             no = self.pegarUltimoNo()
             
-            # no.printNo()
+            no.printNo()
             
             if self.testeObjetivo(no):
                 # no.printNo()
@@ -162,7 +178,41 @@ class Busca:
 
         count = 0
         # em test -> count != 10 // certo -> len(self.filaOrd) > 0
-        while(count != 5):
+        while(len(self.filaOrd) > 0):
+
+            no = self.pegarPrimeiroNoOrd()
+            no.printNo()
+            
+            if self.testeObjetivo(no):
+                no.printNo()
+                return no
+            else:
+                self.sucessor(no)                            
+            count += 1
+    
+    def buscaGulosaME(self, base, typeH):
+        self.addOrdbyHeuristic(base,typeH)        
+
+        count = 0
+        
+        while(len(self.filaOrd) > 0):
+
+            no = self.pegarPrimeiroNoOrd()
+            no.printNo()
+            
+            if self.testeObjetivo(no):
+                no.printNo()
+                return no
+            else:
+                self.sucessor(no)                            
+            count += 1
+    
+    def buscaAplus(self, base, typeH):
+        self.addOrdbyHeuristicCusto(base, typeH)        
+
+        count = 0
+        
+        while(len(self.filaOrd) > 0):
 
             no = self.pegarPrimeiroNoOrd()
             no.printNo()

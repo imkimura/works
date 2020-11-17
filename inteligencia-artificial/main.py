@@ -6,8 +6,8 @@ if __name__ == '__main__':
 
     state = [ 1,  2,  3,  4,
               5,  6,  7,  8,  
-              9, 10,  0, 12,
-              11, 13, 14, 15]
+              9, 10,  11, 12,
+              0, 15, 14, 13]
     
     n = Node(state=state)
 
@@ -15,7 +15,7 @@ if __name__ == '__main__':
 
     b = Busca()
 
-    resp = b.buscaLargura(n)
+    resp = b.buscaAplus(n, 0)
 
     print('\n ----------------- Final ----------------------')
 
