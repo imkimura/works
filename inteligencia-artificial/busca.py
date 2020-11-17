@@ -54,6 +54,14 @@ class Busca:
         self.filaOrd.remove(firstNo)
         
         return firstNo
+    
+    def pegarPrimeiroNoOrdHeuristic(self):
+        
+        firstNo = self.filaOrd[0]
+        
+        self.filaOrd.remove(firstNo)
+        
+        return firstNo
 
     def pegarUltimoNo(self):
         
@@ -63,7 +71,7 @@ class Busca:
 
         return lastNo
 
-    def sucessor(self, base):
+    def sucessor(self, base, typeAdd, typeH=None):
 
         limiteLadoEsquerdo = [0, 4, 8, 12]
         limiteLadoDireito  = [3, 7, 11, 15]
@@ -76,8 +84,14 @@ class Busca:
 
             andaPraCima.state = hp.move(andaPraCima.state, posicaoNulo, (posicaoNulo-4))
 
-            self.fila.append(andaPraCima)     
-            self.addOrd(andaPraCima)
+            if typeAdd == 1:                
+                self.fila.append(andaPraCima)
+            elif typeAdd == 2:                    
+                self.addOrd(andaPraCima)
+            elif typeAdd == 3:
+                self.addOrdbyHeuristic(andaPraCima, typeH)
+            else:
+                self.addOrdbyHeuristicCusto(andaPraCima, typeH)
 
         # Baixo P + 4
         if (posicaoNulo+4) < len(base.state):
@@ -85,8 +99,14 @@ class Busca:
 
             andaPraBaixo.state = hp.move(andaPraBaixo.state, posicaoNulo, (posicaoNulo+4))
             
-            self.fila.append(andaPraBaixo)     
-            self.addOrd(andaPraBaixo)
+            if typeAdd == 1:                
+                self.fila.append(andaPraBaixo)
+            elif typeAdd == 2:                    
+                self.addOrd(andaPraBaixo)
+            elif typeAdd == 3:
+                self.addOrdbyHeuristic(andaPraBaixo, typeH)
+            else:
+                self.addOrdbyHeuristicCusto(andaPraBaixo, typeH)
 
         # Left P - 1
         if posicaoNulo not in limiteLadoEsquerdo and (posicaoNulo-1) > 0:
@@ -94,8 +114,14 @@ class Busca:
 
             andaPraEsquerda.state = hp.move(andaPraEsquerda.state, posicaoNulo, (posicaoNulo-1))
             
-            self.fila.append(andaPraEsquerda)       
-            self.addOrd(andaPraEsquerda)
+            if typeAdd == 1:                
+                self.fila.append(andaPraEsquerda)
+            elif typeAdd == 2:                    
+                self.addOrd(andaPraEsquerda)
+            elif typeAdd == 3:
+                self.addOrdbyHeuristic(andaPraEsquerda, typeH)
+            else:
+                self.addOrdbyHeuristicCusto(andaPraEsquerda, typeH)
         
         # Right P + 1
         if posicaoNulo not in limiteLadoDireito and (posicaoNulo+1) < len(base.state):
@@ -103,8 +129,14 @@ class Busca:
 
             andaPraDireita.state = hp.move(andaPraDireita.state, posicaoNulo, (posicaoNulo+1))
             
-            self.fila.append(andaPraDireita)          
-            self.addOrd(andaPraDireita)
+            if typeAdd == 1:                
+                self.fila.append(andaPraDireita)
+            elif typeAdd == 2:                    
+                self.addOrd(andaPraDireita)
+            elif typeAdd == 3:
+                self.addOrdbyHeuristic(andaPraDireita, typeH)
+            else:
+                self.addOrdbyHeuristicCusto(andaPraDireita, typeH)
           
     def buscaLargura(self, base):
         self.fila.append(base)        
@@ -120,7 +152,7 @@ class Busca:
                 # no.printNo()
                 return no
             else:
-                self.sucessor(no)                            
+                self.sucessor(no, 1)                            
             count += 1
     
     def buscaProfundidade(self, base):
@@ -138,7 +170,7 @@ class Busca:
                 # no.printNo()
                 return no
             else:            
-                self.sucessor(no)                            
+                self.sucessor(no, 1)                            
             count += 1
 
     def buscaProfundidadeLimitada(self, base):        
@@ -155,7 +187,7 @@ class Busca:
                 return no
             else:                
                 if (no.profundidade + 1) < self.limite:
-                    self.sucessor(no)                            
+                    self.sucessor(no, 1)                            
             count += 1
         
         print('\n ----------------- Sem Solução ----------------- \n') 
@@ -187,7 +219,7 @@ class Busca:
                 no.printNo()
                 return no
             else:
-                self.sucessor(no)                            
+                self.sucessor(no, 2)                            
             count += 1
     
     def buscaGulosaME(self, base, typeH):
@@ -197,14 +229,14 @@ class Busca:
         
         while(len(self.filaOrd) > 0):
 
-            no = self.pegarPrimeiroNoOrd()
+            no = self.pegarPrimeiroNoOrdHeuristic()
             no.printNo()
             
             if self.testeObjetivo(no):
                 no.printNo()
                 return no
             else:
-                self.sucessor(no)                            
+                self.sucessor(no, 3, typeH)                            
             count += 1
     
     def buscaAplus(self, base, typeH):
@@ -214,14 +246,14 @@ class Busca:
         
         while(len(self.filaOrd) > 0):
 
-            no = self.pegarPrimeiroNoOrd()
+            no = self.pegarPrimeiroNoOrdHeuristic()
             no.printNo()
             
             if self.testeObjetivo(no):
                 no.printNo()
                 return no
             else:
-                self.sucessor(no)                            
+                self.sucessor(no, 4, typeH)                            
             count += 1
 
 #  Busca em profundidade - ok
