@@ -256,7 +256,7 @@ class Busca:
         while(len(self.filaOrd) > 0):
 
             no = self.pegarPrimeiroNoOrdHeuristic()
-            
+            no.printNo()
             if self.testeObjetivo(no):
                 return no, nosGerados
             else:
