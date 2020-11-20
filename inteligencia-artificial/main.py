@@ -4,10 +4,10 @@ from node import Node
 
 if __name__ == '__main__':
     
-    state = [1,  2,  0,  8,
-            5,  6, 12,  3,
-            9, 10,  4, 15,
-            13, 14,  7, 11]
+    state = [2,  3,  0,  4,
+ 1,  7,  8, 12,
+ 5, 10,  6, 15,
+ 9, 13, 11, 14]
     
     n = Node(state=state)
 
@@ -15,11 +15,11 @@ if __name__ == '__main__':
 
     b = Busca()
 
-    # resp, nosGerados = b.buscaAprofIterativo(n) # IDS
-    # resp, nosGerados = b.buscaGulosaME(n, 0) # GME H1
-    # resp, nosGerados = b.buscaGulosaME(n, 1) # GME H2
-    # resp, nosGerados = b.buscaAplus(n, 0) # A* H1
-    resp, nosGerados = b.buscaAplus(n,1) # A* H2
+#     resp, nosGerados = b.buscaAprofIterativo(n) # IDS
+#     resp, nosGerados = b.buscaGulosaME(n, 0) # GME H1
+#     resp, nosGerados = b.buscaGulosaME(n, 1) # GME H2
+    resp, nosGerados = b.buscaAplus(n, 0) # A* H1
+#     resp, nosGerados = b.buscaAplus(n,1) # A* H2
 
     print('\n ----------------- Final ----------------------')
 

@@ -7,7 +7,7 @@ class Busca:
         self.fila = []
         self.objetivo = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0]
         self.limite = 0
-        self.filaOrd = []
+        self.filaOrd = [[] for y in range(100)]        
     
     def testeObjetivo(self, base):
         if base.state == self.objetivo:
@@ -15,29 +15,24 @@ class Busca:
         else:
             return False
 
-    def addOrd(self, nodeAdd):
-        for chave, node in enumerate(self.filaOrd):
-            if nodeAdd.getCusto() < node.getCusto():
-                self.filaOrd.insert(chave, nodeAdd)
-                break
-        else:
-            self.filaOrd.append(nodeAdd)
+    def addOrd(self, nodeAdd):        
+        self.filaOrd[nodeAdd.getCusto()].append(nodeAdd)
     
-    def addOrdbyHeuristic(self, nodeAdd, typeH):
-        for chave, node in enumerate(self.filaOrd):
-            if nodeAdd.getHeuristic(typeH) < node.getHeuristic(typeH):
-                self.filaOrd.insert(chave, nodeAdd)
-                break
-        else:
-            self.filaOrd.append(nodeAdd)
-   
+    def addOrdbyHeuristic(self, nodeAdd, typeH):        
+        self.filaOrd[nodeAdd.getHeuristic(typeH)].append(nodeAdd)
+        
     def addOrdbyHeuristicCusto(self, nodeAdd, typeH):
-        for chave, node in enumerate(self.filaOrd):
-            if nodeAdd.getHeuristicCusto(typeH) < node.getHeuristicCusto(typeH):
-                self.filaOrd.insert(chave, nodeAdd)
-                break
-        else:
-            self.filaOrd.append(nodeAdd)
+        self.filaOrd[nodeAdd.getHeuristicCusto(typeH)].append(nodeAdd)
+
+    def pegarPrimeiroNoOrd(self):
+        i = 0
+        while(i<100):
+            if(len(self.filaOrd[i])!=0):
+                firstNo = self.filaOrd[i][0]
+                self.filaOrd[i].remove(firstNo)
+                return firstNo
+            i+=1
+        return None
 
     def pegarPrimeiroNo(self):
         
@@ -47,22 +42,6 @@ class Busca:
         
         return firstNo
     
-    def pegarPrimeiroNoOrd(self):
-        
-        firstNo = self.filaOrd[0]
-        
-        self.filaOrd.remove(firstNo)
-        
-        return firstNo
-    
-    def pegarPrimeiroNoOrdHeuristic(self):
-        
-        firstNo = self.filaOrd[0]
-        
-        self.filaOrd.remove(firstNo)
-        
-        return firstNo
-
     def pegarUltimoNo(self):
         
         lastNo = self.fila[len(self.fila)-1]
@@ -219,7 +198,6 @@ class Busca:
             no.printNo()
             
             if self.testeObjetivo(no):
-                no.printNo()
                 return no
             else:
                 self.sucessor(no, 2)                            
@@ -235,11 +213,10 @@ class Busca:
         
         while(len(self.filaOrd) > 0):
 
-            no = self.pegarPrimeiroNoOrdHeuristic()
-            no.printNo()
+            no = self.pegarPrimeiroNoOrd()
             
+            no.printNo()
             if self.testeObjetivo(no):
-                no.printNo()
                 return no, nosGerados
             else:
                 nosGerados += self.sucessor(no, 3, typeH)                            
@@ -255,8 +232,7 @@ class Busca:
         
         while(len(self.filaOrd) > 0):
 
-            no = self.pegarPrimeiroNoOrdHeuristic()
-            no.printNo()
+            no = self.pegarPrimeiroNoOrd()
             if self.testeObjetivo(no):
                 return no, nosGerados
             else:
