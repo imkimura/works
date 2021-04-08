@@ -3,6 +3,6 @@ from matriz import Matriz
 
 if __name__ == "__main__":
   
-  m = Matriz([[0, 1, 2], [4, 5, 6], [8, 9, 7]])
+  m = Matriz([[0, 2, 1], [4, 5, 1], [8, 9, 1]])
   
-  m.rotacao()
+  print(m.rotacao(1,1,30))
